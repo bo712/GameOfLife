@@ -1,4 +1,3 @@
-﻿using System;
 using NUnit.Framework;
 
 namespace GameOfLife.Tests
@@ -9,14 +8,17 @@ namespace GameOfLife.Tests
         [Test]
         public void CalculateNeighbours_Point_Ex()
         {
-            Field field = new Field(4, 4)
+            var field = new Field(4, 4)
             {
-                array = new char[,]{  { ' ', '*', '*', '*'},
-                                        { '*', '*', '*', '*'},
-                                        { '*', '*', '*', '*'},
-                                        { '*', '*', '*', '*'} }
+                Array = new char[,]
+                {
+                    {' ', '*', '*', '*'},
+                    {'*', '*', '*', '*'},
+                    {'*', '*', '*', '*'},
+                    {'*', '*', '*', '*'}
+                }
             };
-            int result = field.CalculateNeighbours(1,2, field.array);
+            var result = field.CalculateNeighbours(1, 2, field.Array);
             Assert.AreEqual(7, 7);
         }
     }
