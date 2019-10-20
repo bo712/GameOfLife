@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GameOfLife
 {
@@ -9,7 +10,7 @@ namespace GameOfLife
         private readonly int _width;
 
         public Field(int height, int width)
-        {            
+        {
             _array = new char[height, width];
             _height = _array.GetLength(0);
             _width = _array.GetLength(1);
@@ -34,7 +35,15 @@ namespace GameOfLife
                 for (var j = 0; j < _width; j++)
                 {
                     var neighbours = CalculateNeighbours(i, j, _array);
-                    if (neighbours < 2 || neighbours > 3)
+                    if (_array[i, j] == ' ' && neighbours == 3)
+                    {
+                        newField._array[i, j] = '*';
+                    }
+                    else if (_array[i, j] == ' ' && neighbours != 3)
+                    {
+                        newField._array[i, j] = ' ';
+                    }
+                    else if (_array[i, j] == '*' && (neighbours < 2 || neighbours > 3))
                     {
                         newField._array[i, j] = ' ';
                     }
@@ -57,7 +66,6 @@ namespace GameOfLife
             else if (indexVert == 0 && indexHoriz == _width - 1)
             {
                 neighbourCount += CheckUpperRightCorner(indexVert, indexHoriz, array);
-                
             }
             else if (indexVert == _height - 1 && indexHoriz == 0)
             {
@@ -82,7 +90,7 @@ namespace GameOfLife
                 if (array[1, indexHoriz + 1] == '*')
                     neighbourCount++;
             }
-            
+
             //проверяем, если точка на левой грани, но не угловая
             else if (indexHoriz == 0)
             {
@@ -97,7 +105,7 @@ namespace GameOfLife
                 if (array[indexVert + 1, 0] == '*')
                     neighbourCount++;
             }
-            
+
             //проверяем, если точка на нижней грани, но не угловая
             else if (indexVert == _height - 1)
             {
@@ -112,7 +120,7 @@ namespace GameOfLife
                 if (array[indexVert, indexHoriz + 1] == '*')
                     neighbourCount++;
             }
-            
+
             //проверяем, если точка на правой грани, но не угловая
             else if (indexHoriz == _width - 1)
             {
@@ -129,7 +137,7 @@ namespace GameOfLife
             }
 
             //проверяем, если центр
-            else if (indexVert != 0 && indexVert != _width - 1 && indexHoriz != 0 && indexHoriz != _height - 1)
+            else /*if (indexVert != 0 && indexVert != _width - 1 && indexHoriz != 0 && indexHoriz != _height - 1)*/
             {
                 if (array[indexVert - 1, indexHoriz - 1] == '*')
                     neighbourCount++;
@@ -164,7 +172,7 @@ namespace GameOfLife
             return neighbourCount;
         }
 
-        private static int  CheckLowerLeftCorner (int indexV, int indexH, char[,] array)
+        private static int CheckLowerLeftCorner(int indexV, int indexH, char[,] array)
         {
             int neighbourCount = 0;
             if (array[indexV - 1, indexH] == '*')
@@ -217,6 +225,11 @@ namespace GameOfLife
             }
 
             Console.WriteLine();
+        }
+
+        public int CalculatePopulation()
+        {
+            return _array.Cast<char>().Count(point => point == '*');
         }
     }
 }
