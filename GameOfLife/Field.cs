@@ -9,10 +9,10 @@ namespace GameOfLife
         private readonly int _width;
 
         public Field(int height, int width)
-        {
-            _height = height;
-            _width = width;
+        {            
             _array = new char[height, width];
+            _height = _array.GetLength(0);
+            _width = _array.GetLength(1);
         }
 
         public void FillField()
@@ -29,9 +29,9 @@ namespace GameOfLife
 
         public void CheckField(Field newField)
         {
-            for (var i = 0; i < _width; i++)
+            for (var i = 0; i < _height; i++)
             {
-                for (var j = 0; j < _height; j++)
+                for (var j = 0; j < _width; j++)
                 {
                     var neighbours = CalculateNeighbours(i, j, _array);
                     if (neighbours < 2 || neighbours > 3)
@@ -46,155 +46,156 @@ namespace GameOfLife
             }
         }
 
-        public int CalculateNeighbours(int indexX, int indexY, char[,] array)
+        public int CalculateNeighbours(int indexVert, int indexHoriz, char[,] array)
         {
             var neighbourCount = 0;
             //проверяем, если это угловые точки
-            if (indexX == 0 && indexY == 0)
+            if (indexVert == 0 && indexHoriz == 0)
             {
-                neighbourCount += CheckUpperLeftCorner(indexX, indexY, array);
+                neighbourCount += CheckUpperLeftCorner(indexVert, indexHoriz, array);
             }
-            else if (indexX == 0 && indexY == _height - 1)
+            else if (indexVert == 0 && indexHoriz == _width - 1)
             {
-                neighbourCount += CheckLowerLeftCorner(indexX, indexY, array);
+                neighbourCount += CheckUpperRightCorner(indexVert, indexHoriz, array);
+                
             }
-            else if (indexX == _width - 1 && indexY == 0)
+            else if (indexVert == _height - 1 && indexHoriz == 0)
             {
-                neighbourCount += CheckUpperRightCorner(indexX, indexY, array);
+                neighbourCount += CheckLowerLeftCorner(indexVert, indexHoriz, array);
             }
-            else if (indexX == _width - 1 && indexY == _height - 1)
+            else if (indexVert == _height - 1 && indexHoriz == _width - 1)
             {
-                neighbourCount += CheckLowerRightCorner(indexX, indexY, array);
+                neighbourCount += CheckLowerRightCorner(indexVert, indexHoriz, array);
             }
 
-            //проверяем, если точка на левой грани, но не угловая
-            else if (indexX == 0)
-            {
-                if (array[0, indexY - 1] == '*')
-                    neighbourCount++;
-                if (array[0, indexY + 1] == '*')
-                    neighbourCount++;
-                if (array[1, indexY - 1] == '*')
-                    neighbourCount++;
-                if (array[1, indexY] == '*')
-                    neighbourCount++;
-                if (array[1, indexY + 1] == '*')
-                    neighbourCount++;
-            }
-            
             //проверяем, если точка на верхней грани, но не угловая
-            else if (indexY == 0)
+            else if (indexVert == 0)
             {
-                if (array[indexX - 1, 0] == '*')
+                if (array[0, indexHoriz - 1] == '*')
                     neighbourCount++;
-                if (array[indexX - 1, 1] == '*')
+                if (array[0, indexHoriz + 1] == '*')
                     neighbourCount++;
-                if (array[indexX, 1] == '*')
+                if (array[1, indexHoriz - 1] == '*')
                     neighbourCount++;
-                if (array[indexX + 1, 1] == '*')
+                if (array[1, indexHoriz] == '*')
                     neighbourCount++;
-                if (array[indexX + 1, 0] == '*')
+                if (array[1, indexHoriz + 1] == '*')
                     neighbourCount++;
             }
             
-            //проверяем, если точка на правой грани, но не угловая
-            else if (indexX == _width - 1)
+            //проверяем, если точка на левой грани, но не угловая
+            else if (indexHoriz == 0)
             {
-                if (array[indexX - 1, indexY - 1] == '*')
+                if (array[indexVert - 1, 0] == '*')
                     neighbourCount++;
-                if (array[indexX - 1, indexY] == '*')
+                if (array[indexVert - 1, 1] == '*')
                     neighbourCount++;
-                if (array[indexX - 1, indexY + 1] == '*')
+                if (array[indexVert, 1] == '*')
                     neighbourCount++;
-                if (array[indexX, indexY - 1] == '*')
+                if (array[indexVert + 1, 1] == '*')
                     neighbourCount++;
-                if (array[indexX, indexY + 1] == '*')
+                if (array[indexVert + 1, 0] == '*')
                     neighbourCount++;
             }
             
             //проверяем, если точка на нижней грани, но не угловая
-            else if (indexY == _height - 1)
+            else if (indexVert == _height - 1)
             {
-                if (array[indexX - 1, indexY - 1] == '*')
+                if (array[indexVert - 1, indexHoriz - 1] == '*')
                     neighbourCount++;
-                if (array[indexX - 1, indexY] == '*')
+                if (array[indexVert - 1, indexHoriz] == '*')
                     neighbourCount++;
-                if (array[indexX, indexY - 1] == '*')
+                if (array[indexVert - 1, indexHoriz + 1] == '*')
                     neighbourCount++;
-                if (array[indexX + 1, indexY - 1] == '*')
+                if (array[indexVert, indexHoriz - 1] == '*')
                     neighbourCount++;
-                if (array[indexX + 1, indexY] == '*')
+                if (array[indexVert, indexHoriz + 1] == '*')
+                    neighbourCount++;
+            }
+            
+            //проверяем, если точка на правой грани, но не угловая
+            else if (indexHoriz == _width - 1)
+            {
+                if (array[indexVert - 1, indexHoriz - 1] == '*')
+                    neighbourCount++;
+                if (array[indexVert - 1, indexHoriz] == '*')
+                    neighbourCount++;
+                if (array[indexVert, indexHoriz - 1] == '*')
+                    neighbourCount++;
+                if (array[indexVert + 1, indexHoriz - 1] == '*')
+                    neighbourCount++;
+                if (array[indexVert + 1, indexHoriz] == '*')
                     neighbourCount++;
             }
 
             //проверяем, если центр
-            else if (indexX != 0 && indexX != _width - 1 && indexY != 0 && indexY != _height - 1)
+            else if (indexVert != 0 && indexVert != _width - 1 && indexHoriz != 0 && indexHoriz != _height - 1)
             {
-                if (array[indexX - 1, indexY - 1] == '*')
+                if (array[indexVert - 1, indexHoriz - 1] == '*')
                     neighbourCount++;
-                if (array[indexX - 1, indexY] == '*')
+                if (array[indexVert - 1, indexHoriz] == '*')
                     neighbourCount++;
-                if (array[indexX - 1, indexY + 1] == '*')
+                if (array[indexVert - 1, indexHoriz + 1] == '*')
                     neighbourCount++;
-                if (array[indexX, indexY - 1] == '*')
+                if (array[indexVert, indexHoriz - 1] == '*')
                     neighbourCount++;
-                if (array[indexX, indexY + 1] == '*')
+                if (array[indexVert, indexHoriz + 1] == '*')
                     neighbourCount++;
-                if (array[indexX + 1, indexY - 1] == '*')
+                if (array[indexVert + 1, indexHoriz - 1] == '*')
                     neighbourCount++;
-                if (array[indexX + 1, indexY] == '*')
+                if (array[indexVert + 1, indexHoriz] == '*')
                     neighbourCount++;
-                if (array[indexX + 1, indexY + 1] == '*')
+                if (array[indexVert + 1, indexHoriz + 1] == '*')
                     neighbourCount++;
             }
 
             return neighbourCount;
         }
 
-        private static int CheckLowerRightCorner(int indexX, int indexY, char[,] array)
+        private static int CheckLowerRightCorner(int indexV, int indexH, char[,] array)
         {
             int neighbourCount = 0;
-            if (array[indexX, indexY - 1] == '*')
+            if (array[indexV, indexH - 1] == '*')
                 neighbourCount++;
-            if (array[indexX - 1, indexY] == '*')
+            if (array[indexV - 1, indexH] == '*')
                 neighbourCount++;
-            if (array[indexX - 1, indexY - 1] == '*')
+            if (array[indexV - 1, indexH - 1] == '*')
                 neighbourCount++;
             return neighbourCount;
         }
 
-        private static int CheckUpperRightCorner(int indexX, int indexY, char[,] array)
+        private static int  CheckLowerLeftCorner (int indexV, int indexH, char[,] array)
         {
             int neighbourCount = 0;
-            if (array[indexX - 1, indexY] == '*')
+            if (array[indexV - 1, indexH] == '*')
                 neighbourCount++;
-            if (array[indexX - 1, indexY + 1] == '*')
+            if (array[indexV - 1, indexH + 1] == '*')
                 neighbourCount++;
-            if (array[indexX, indexY + 1] == '*')
-                neighbourCount++;
-            return neighbourCount;
-        }
-
-        private static int CheckLowerLeftCorner(int indexX, int indexY, char[,] array)
-        {
-            var neighbourCount = 0;
-            if (array[indexX, indexY - 1] == '*')
-                neighbourCount++;
-            if (array[indexX + 1, indexY - 1] == '*')
-                neighbourCount++;
-            if (array[indexX + 1, indexY] == '*')
+            if (array[indexV, indexH + 1] == '*')
                 neighbourCount++;
             return neighbourCount;
         }
 
-        private static int CheckUpperLeftCorner(int indexX, int indexY, char[,] array)
+        private static int CheckUpperRightCorner(int indexV, int indexH, char[,] array)
         {
             var neighbourCount = 0;
-            if (array[indexX, indexY + 1] == '*')
+            if (array[indexV, indexH - 1] == '*')
                 neighbourCount++;
-            if (array[indexX + 1, indexY] == '*')
+            if (array[indexV + 1, indexH - 1] == '*')
                 neighbourCount++;
-            if (array[indexX + 1, indexY + 1] == '*')
+            if (array[indexV + 1, indexH] == '*')
+                neighbourCount++;
+            return neighbourCount;
+        }
+
+        private static int CheckUpperLeftCorner(int indexV, int indexH, char[,] array)
+        {
+            var neighbourCount = 0;
+            if (array[indexV, indexH + 1] == '*')
+                neighbourCount++;
+            if (array[indexV + 1, indexH] == '*')
+                neighbourCount++;
+            if (array[indexV + 1, indexH + 1] == '*')
                 neighbourCount++;
             return neighbourCount;
         }

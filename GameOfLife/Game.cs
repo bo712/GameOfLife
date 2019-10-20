@@ -6,7 +6,7 @@ namespace GameOfLife
     public class Game
     {
         private Field _field;
-        private readonly Field _newField;
+        private  Field _newField;
 
         public Game(int height, int width)
         {

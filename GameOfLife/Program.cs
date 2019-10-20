@@ -6,7 +6,7 @@ namespace GameOfLife
     {
         public static void Main(string[] args)
         {
-            var game = new Game(20, 20);
+            var game = new Game(15, 10);
             game.Start();
         }
     }
