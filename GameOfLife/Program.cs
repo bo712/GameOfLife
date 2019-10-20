@@ -6,10 +6,8 @@ namespace GameOfLife
     {
         public static void Main(string[] args)
         {
-            var field = new Field(10, 10);
-            field.FillArray();
-            field.PrintField();
-            var newField = new Field(10, 10);
+            var game = new Game(20, 20);
+            game.Start();
         }
     }
 }
