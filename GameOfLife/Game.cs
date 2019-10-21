@@ -31,14 +31,26 @@ namespace GameOfLife
 
                 if (CheckGenerationsForEquality())
                 {
-                    Console.WriteLine("AUTOSTOP!");
-                    break;
+                    DropRandomCells();
                 }
 
                 _field = _newField;
                 _newField = new Field(_field._array.GetLength(0), _field._array.GetLength(1));
-                Thread.Sleep(50);
+                Thread.Sleep(40);
             }
+        }
+
+        private void DropRandomCells()
+        {
+            var arrayHeight = _newField._array.GetLength(0);
+            var arrayWidth = _newField._array.GetLength(1);
+            var rnd = new Random();
+
+            for (int i = 0; i < 3; i++)
+            {
+                _newField._array[rnd.Next(0, arrayHeight), rnd.Next(0, arrayWidth)] = '*';
+            }
+            Thread.Sleep(100);
         }
 
         private bool CheckGenerationsForEquality()
