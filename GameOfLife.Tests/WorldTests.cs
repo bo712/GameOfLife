@@ -33,11 +33,11 @@ namespace GameOfLife.Tests
             {
                 Array = new char[,]
                 {
-                    {' ', '*', '*', '*', '*', '*'},
-                    {'*', '*', '*', '*', '*', '*'},
-                    {'*', '*', '*', ' ', '*', '*'},
-                    {' ', ' ', '*', '*', '*', '*'},
-                    {'*', ' ', '*', '*', '*', '*'}
+                    {' ', 'o', 'o', 'o', 'o', 'o'},
+                    {'o', 'o', 'o', 'o', 'o', 'o'},
+                    {'o', 'o', 'o', ' ', 'o', 'o'},
+                    {' ', ' ', 'o', 'o', 'o', 'o'},
+                    {'o', ' ', 'o', 'o', 'o', 'o'}
                 }
             };
             return currentGeneration.CalculateNeighbours(indexV, indexH, currentGeneration.Array);
@@ -50,11 +50,11 @@ namespace GameOfLife.Tests
             {
                 Array = new char[,]
                 {
-                    {' ', '*', '*', '*', '*', '*'},
-                    {'*', '*', '*', '*', '*', '*'},
-                    {'*', '*', '*', ' ', '*', '*'},
-                    {' ', ' ', '*', '*', '*', '*'},
-                    {'*', ' ', '*', '*', '*', '*'}
+                    {' ', 'o', 'o', 'o', 'o', 'o'},
+                    {'o', 'o', 'o', 'o', 'o', 'o'},
+                    {'o', 'o', 'o', ' ', 'o', 'o'},
+                    {' ', ' ', 'o', 'o', 'o', 'o'},
+                    {'o', ' ', 'o', 'o', 'o', 'o'}
                 }
             };
             var result = currentGeneration.CalculatePopulation();

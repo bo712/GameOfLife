@@ -61,7 +61,7 @@ namespace GameOfLife
 
             for (var i = 0; i < 4; i++)
             {
-                NextGeneration.Array[rnd.Next(0, arrayHeight), rnd.Next(0, arrayWidth)] = '*';
+                NextGeneration.Array[rnd.Next(0, arrayHeight), rnd.Next(0, arrayWidth)] = 'o';
             }
         }
 

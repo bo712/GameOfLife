@@ -23,7 +23,7 @@ namespace GameOfLife
             {
                 for (var j = 0; j < _width; j++)
                 {
-                    Array[i, j] = (rnd.Next() % 2 == 0) ? '*' : ' ';
+                    Array[i, j] = (rnd.Next() % 2 == 0) ? 'o' : ' ';
                 }
             }
         }
@@ -37,19 +37,19 @@ namespace GameOfLife
                     var neighbours = CalculateNeighbours(i, j, Array);
                     if (Array[i, j] == ' ' && neighbours == 3)
                     {
-                        newWorld.Array[i, j] = '*';
+                        newWorld.Array[i, j] = 'o';
                     }
                     else if (Array[i, j] == ' ' && neighbours != 3)
                     {
                         newWorld.Array[i, j] = ' ';
                     }
-                    else if (Array[i, j] == '*' && (neighbours < 2 || neighbours > 3))
+                    else if (Array[i, j] == 'o' && (neighbours < 2 || neighbours > 3))
                     {
                         newWorld.Array[i, j] = ' ';
                     }
                     else
                     {
-                        newWorld.Array[i, j] = '*';
+                        newWorld.Array[i, j] = 'o';
                     }
                 }
             }
@@ -79,81 +79,81 @@ namespace GameOfLife
             //проверяем, если точка на верхней грани, но не угловая
             else if (indexVert == 0)
             {
-                if (array[0, indexHoriz - 1] == '*')
+                if (array[0, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[0, indexHoriz + 1] == '*')
+                if (array[0, indexHoriz + 1] == 'o')
                     neighbourCount++;
-                if (array[1, indexHoriz - 1] == '*')
+                if (array[1, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[1, indexHoriz] == '*')
+                if (array[1, indexHoriz] == 'o')
                     neighbourCount++;
-                if (array[1, indexHoriz + 1] == '*')
+                if (array[1, indexHoriz + 1] == 'o')
                     neighbourCount++;
             }
 
             //проверяем, если точка на левой грани, но не угловая
             else if (indexHoriz == 0)
             {
-                if (array[indexVert - 1, 0] == '*')
+                if (array[indexVert - 1, 0] == 'o')
                     neighbourCount++;
-                if (array[indexVert - 1, 1] == '*')
+                if (array[indexVert - 1, 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert, 1] == '*')
+                if (array[indexVert, 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert + 1, 1] == '*')
+                if (array[indexVert + 1, 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert + 1, 0] == '*')
+                if (array[indexVert + 1, 0] == 'o')
                     neighbourCount++;
             }
 
             //проверяем, если точка на нижней грани, но не угловая
             else if (indexVert == _height - 1)
             {
-                if (array[indexVert - 1, indexHoriz - 1] == '*')
+                if (array[indexVert - 1, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert - 1, indexHoriz] == '*')
+                if (array[indexVert - 1, indexHoriz] == 'o')
                     neighbourCount++;
-                if (array[indexVert - 1, indexHoriz + 1] == '*')
+                if (array[indexVert - 1, indexHoriz + 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert, indexHoriz - 1] == '*')
+                if (array[indexVert, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert, indexHoriz + 1] == '*')
+                if (array[indexVert, indexHoriz + 1] == 'o')
                     neighbourCount++;
             }
 
             //проверяем, если точка на правой грани, но не угловая
             else if (indexHoriz == _width - 1)
             {
-                if (array[indexVert - 1, indexHoriz - 1] == '*')
+                if (array[indexVert - 1, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert - 1, indexHoriz] == '*')
+                if (array[indexVert - 1, indexHoriz] == 'o')
                     neighbourCount++;
-                if (array[indexVert, indexHoriz - 1] == '*')
+                if (array[indexVert, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert + 1, indexHoriz - 1] == '*')
+                if (array[indexVert + 1, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert + 1, indexHoriz] == '*')
+                if (array[indexVert + 1, indexHoriz] == 'o')
                     neighbourCount++;
             }
 
             //проверяем, если центр
             else /*if (indexVert != 0 && indexVert != _width - 1 && indexHoriz != 0 && indexHoriz != _height - 1)*/
             {
-                if (array[indexVert - 1, indexHoriz - 1] == '*')
+                if (array[indexVert - 1, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert - 1, indexHoriz] == '*')
+                if (array[indexVert - 1, indexHoriz] == 'o')
                     neighbourCount++;
-                if (array[indexVert - 1, indexHoriz + 1] == '*')
+                if (array[indexVert - 1, indexHoriz + 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert, indexHoriz - 1] == '*')
+                if (array[indexVert, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert, indexHoriz + 1] == '*')
+                if (array[indexVert, indexHoriz + 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert + 1, indexHoriz - 1] == '*')
+                if (array[indexVert + 1, indexHoriz - 1] == 'o')
                     neighbourCount++;
-                if (array[indexVert + 1, indexHoriz] == '*')
+                if (array[indexVert + 1, indexHoriz] == 'o')
                     neighbourCount++;
-                if (array[indexVert + 1, indexHoriz + 1] == '*')
+                if (array[indexVert + 1, indexHoriz + 1] == 'o')
                     neighbourCount++;
             }
 
@@ -163,11 +163,11 @@ namespace GameOfLife
         private static int CheckLowerRightCorner(int indexV, int indexH, char[,] array)
         {
             var neighbourCount = 0;
-            if (array[indexV, indexH - 1] == '*')
+            if (array[indexV, indexH - 1] == 'o')
                 neighbourCount++;
-            if (array[indexV - 1, indexH] == '*')
+            if (array[indexV - 1, indexH] == 'o')
                 neighbourCount++;
-            if (array[indexV - 1, indexH - 1] == '*')
+            if (array[indexV - 1, indexH - 1] == 'o')
                 neighbourCount++;
             return neighbourCount;
         }
@@ -175,11 +175,11 @@ namespace GameOfLife
         private static int CheckLowerLeftCorner(int indexV, int indexH, char[,] array)
         {
             var neighbourCount = 0;
-            if (array[indexV - 1, indexH] == '*')
+            if (array[indexV - 1, indexH] == 'o')
                 neighbourCount++;
-            if (array[indexV - 1, indexH + 1] == '*')
+            if (array[indexV - 1, indexH + 1] == 'o')
                 neighbourCount++;
-            if (array[indexV, indexH + 1] == '*')
+            if (array[indexV, indexH + 1] == 'o')
                 neighbourCount++;
             return neighbourCount;
         }
@@ -187,11 +187,11 @@ namespace GameOfLife
         private static int CheckUpperRightCorner(int indexV, int indexH, char[,] array)
         {
             var neighbourCount = 0;
-            if (array[indexV, indexH - 1] == '*')
+            if (array[indexV, indexH - 1] == 'o')
                 neighbourCount++;
-            if (array[indexV + 1, indexH - 1] == '*')
+            if (array[indexV + 1, indexH - 1] == 'o')
                 neighbourCount++;
-            if (array[indexV + 1, indexH] == '*')
+            if (array[indexV + 1, indexH] == 'o')
                 neighbourCount++;
             return neighbourCount;
         }
@@ -199,11 +199,11 @@ namespace GameOfLife
         private static int CheckUpperLeftCorner(int indexV, int indexH, char[,] array)
         {
             var neighbourCount = 0;
-            if (array[indexV, indexH + 1] == '*')
+            if (array[indexV, indexH + 1] == 'o')
                 neighbourCount++;
-            if (array[indexV + 1, indexH] == '*')
+            if (array[indexV + 1, indexH] == 'o')
                 neighbourCount++;
-            if (array[indexV + 1, indexH + 1] == '*')
+            if (array[indexV + 1, indexH + 1] == 'o')
                 neighbourCount++;
             return neighbourCount;
         }
@@ -229,7 +229,7 @@ namespace GameOfLife
 
         public int CalculatePopulation()
         {
-            return Array.Cast<char>().Count(point => point == '*');
+            return Array.Cast<char>().Count(point => point == 'o');
         }
     }
 }
