@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace GameOfLife.Tests
 {
     [TestFixture]
-    public class FieldTests
+    public class WorldTests
     {
         [TestCase(0, 0, ExpectedResult = 3)]
         [TestCase(1, 0, ExpectedResult = 4)]
@@ -29,9 +29,9 @@ namespace GameOfLife.Tests
         [TestCase(1, 4, ExpectedResult = 7)]
         public int CalculateNeighbours_Points_ReturnRightAnswer(int indexV, int indexH)
         {
-            var field = new Field(5, 6)
+            var currentGeneration = new World(5, 6)
             {
-                _array = new char[,]
+                Array = new char[,]
                 {
                     {' ', '*', '*', '*', '*', '*'},
                     {'*', '*', '*', '*', '*', '*'},
@@ -40,7 +40,26 @@ namespace GameOfLife.Tests
                     {'*', ' ', '*', '*', '*', '*'}
                 }
             };
-            return field.CalculateNeighbours(indexV, indexH, field._array);
+            return currentGeneration.CalculateNeighbours(indexV, indexH, currentGeneration.Array);
+        }
+
+        [Test]
+        public void CalculatePopulation_25LiveCells()
+        {
+            var currentGeneration = new World(5, 6)
+            {
+                Array = new char[,]
+                {
+                    {' ', '*', '*', '*', '*', '*'},
+                    {'*', '*', '*', '*', '*', '*'},
+                    {'*', '*', '*', ' ', '*', '*'},
+                    {' ', ' ', '*', '*', '*', '*'},
+                    {'*', ' ', '*', '*', '*', '*'}
+                }
+            };
+            var result = currentGeneration.CalculatePopulation();
+            Assert.AreEqual(25, result);
+            Assert.AreNotEqual(20, result);
         }
     }
 }
