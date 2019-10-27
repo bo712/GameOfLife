@@ -3,17 +3,17 @@ using System.Linq;
 
 namespace GameOfLife
 {
-    public class Field
+    public class World
     {
-        public char[,] _array;
+        public char[,] Array { get; set;}
         private readonly int _height;
         private readonly int _width;
 
-        public Field(int height, int width)
+        public World(int height, int width)
         {
-            _array = new char[height, width];
-            _height = _array.GetLength(0);
-            _width = _array.GetLength(1);
+            Array = new char[height, width];
+            _height = Array.GetLength(0);
+            _width = Array.GetLength(1);
         }
 
         public void FillField()
@@ -23,33 +23,33 @@ namespace GameOfLife
             {
                 for (var j = 0; j < _width; j++)
                 {
-                    _array[i, j] = (rnd.Next() % 2 == 0) ? '*' : ' ';
+                    Array[i, j] = (rnd.Next() % 2 == 0) ? '*' : ' ';
                 }
             }
         }
 
-        public void CheckField(Field newField)
+        public void BornNextGeneration(World newWorld)
         {
             for (var i = 0; i < _height; i++)
             {
                 for (var j = 0; j < _width; j++)
                 {
-                    var neighbours = CalculateNeighbours(i, j, _array);
-                    if (_array[i, j] == ' ' && neighbours == 3)
+                    var neighbours = CalculateNeighbours(i, j, Array);
+                    if (Array[i, j] == ' ' && neighbours == 3)
                     {
-                        newField._array[i, j] = '*';
+                        newWorld.Array[i, j] = '*';
                     }
-                    else if (_array[i, j] == ' ' && neighbours != 3)
+                    else if (Array[i, j] == ' ' && neighbours != 3)
                     {
-                        newField._array[i, j] = ' ';
+                        newWorld.Array[i, j] = ' ';
                     }
-                    else if (_array[i, j] == '*' && (neighbours < 2 || neighbours > 3))
+                    else if (Array[i, j] == '*' && (neighbours < 2 || neighbours > 3))
                     {
-                        newField._array[i, j] = ' ';
+                        newWorld.Array[i, j] = ' ';
                     }
                     else
                     {
-                        newField._array[i, j] = '*';
+                        newWorld.Array[i, j] = '*';
                     }
                 }
             }
@@ -162,7 +162,7 @@ namespace GameOfLife
 
         private static int CheckLowerRightCorner(int indexV, int indexH, char[,] array)
         {
-            int neighbourCount = 0;
+            var neighbourCount = 0;
             if (array[indexV, indexH - 1] == '*')
                 neighbourCount++;
             if (array[indexV - 1, indexH] == '*')
@@ -174,7 +174,7 @@ namespace GameOfLife
 
         private static int CheckLowerLeftCorner(int indexV, int indexH, char[,] array)
         {
-            int neighbourCount = 0;
+            var neighbourCount = 0;
             if (array[indexV - 1, indexH] == '*')
                 neighbourCount++;
             if (array[indexV - 1, indexH + 1] == '*')
@@ -221,7 +221,7 @@ namespace GameOfLife
         {
             for (var i = 0; i < _width; i++)
             {
-                Console.Write(_array[rowNumber, i] + " ");
+                Console.Write(Array[rowNumber, i] + " ");
             }
 
             Console.WriteLine();
@@ -229,7 +229,7 @@ namespace GameOfLife
 
         public int CalculatePopulation()
         {
-            return _array.Cast<char>().Count(point => point == '*');
+            return Array.Cast<char>().Count(point => point == '*');
         }
     }
 }
