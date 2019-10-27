@@ -5,61 +5,89 @@ namespace GameOfLife
 {
     public class Game
     {
-        private Field _field;
-        private Field _newField;
+        public World CurrentGeneration { get; private set; }
+        public World NextGeneration { get; private set; }
+        public World PrevGeneration { get; private set; }
 
         public Game(int height, int width)
         {
-            _field = new Field(height, width);
-            _newField = new Field(height, width);
+            CurrentGeneration = new World(height, width);
+            NextGeneration = new World(height, width);
+            PrevGeneration = new World(height, width);
         }
 
-        public void Start()
+        public void StartGame()
         {
-            _field.FillField();
+            CurrentGeneration.FillField();
+
             while (true)
             {
-                _field.PrintField();
-
-                if (_field.CalculatePopulation() == 0)
-                {
-                    Console.WriteLine("All dead! All dead!");
-                    break;
-                }
-
-                _field.CheckField(_newField);
-
-                if (CheckGenerationsForEquality())
-                {
-                    DropRandomCells();
-                }
-
-                _field = _newField;
-                _newField = new Field(_field._array.GetLength(0), _field._array.GetLength(1));
-                Thread.Sleep(40);
+                CurrentGeneration.PrintField();
+                if (CheckPopulationForZero()) break;
+                CurrentGeneration.BornNextGeneration(NextGeneration);
+                TryToFixStalemate();
+                ShiftGenerations();
+                Thread.Sleep(100);
             }
+        }
+
+        private void TryToFixStalemate()
+        {
+            if (CheckCurrentAndNextGenerationsForEquality() || CheckPrevAndNextGenerationsForEquality())
+            {
+                DropRandomCells();
+            }
+        }
+
+        private bool CheckPopulationForZero()
+        {
+            if (CurrentGeneration.CalculatePopulation() != 0) return false;
+            Console.WriteLine("All dead! All dead!");
+            return true;
+        }
+
+        private void ShiftGenerations()
+        {
+            PrevGeneration = CurrentGeneration;
+            CurrentGeneration = NextGeneration;
+            NextGeneration = new World(CurrentGeneration.Array.GetLength(0), CurrentGeneration.Array.GetLength(1));
         }
 
         private void DropRandomCells()
         {
-            var arrayHeight = _newField._array.GetLength(0);
-            var arrayWidth = _newField._array.GetLength(1);
+            var arrayHeight = NextGeneration.Array.GetLength(0);
+            var arrayWidth = NextGeneration.Array.GetLength(1);
             var rnd = new Random();
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 4; i++)
             {
-                _newField._array[rnd.Next(0, arrayHeight), rnd.Next(0, arrayWidth)] = '*';
+                NextGeneration.Array[rnd.Next(0, arrayHeight), rnd.Next(0, arrayWidth)] = '*';
             }
-            Thread.Sleep(100);
         }
 
-        private bool CheckGenerationsForEquality()
+        public bool CheckCurrentAndNextGenerationsForEquality()
         {
-            for (int i = 0; i < _field._array.GetLength(0); i++)
+            for (var i = 0; i < CurrentGeneration.Array.GetLength(0); i++)
             {
-                for (int j = 0; j < _field._array.GetLength(1); j++)
+                for (var j = 0; j < CurrentGeneration.Array.GetLength(1); j++)
                 {
-                    if (_field._array[i, j] != _newField._array[i, j])
+                    if (CurrentGeneration.Array[i, j] != NextGeneration.Array[i, j])
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public bool CheckPrevAndNextGenerationsForEquality()
+        {
+            for (var i = 0; i < PrevGeneration.Array.GetLength(0); i++)
+            {
+                for (var j = 0; j < PrevGeneration.Array.GetLength(1); j++)
+                {
+                    if (PrevGeneration.Array[i, j] != NextGeneration.Array[i, j])
                     {
                         return false;
                     }
